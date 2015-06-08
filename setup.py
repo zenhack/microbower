@@ -1,19 +1,11 @@
 from setuptools import setup
 
-setup(name='package-name',
+setup(name='microbower',
       version='0.1',
-      packages=[],
-
-      author='Your Name',
-      author_email='you@example.com',
-      description='Short description',
-      license='some license[1]',
-      url='https://www.example.com/your-project',
+      packages=['microbower'],
+      author='Ian Denhardt',
+      author_email='ian@zenhack.net',
+      description='Node.js-free tool for managing bower assets',
+      license='ISC',
+      url='https://github.com/zenhack/microbower',
       )
-
-# [1] There's a good list of Open Source license here:
-#
-#   http://opensource.org/licenses/alphabetical
-#
-# The license field should be the same as the abbreviation in parens
-# on that page.
