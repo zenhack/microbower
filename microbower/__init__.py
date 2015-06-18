@@ -5,6 +5,7 @@ import json
 import os
 import os.path
 
+
 def install():
     with open('.bowerrc') as f:
         bowerrc = json.load(f)
