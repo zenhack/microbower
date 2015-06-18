@@ -24,7 +24,8 @@ def install():
         req = urllib.urlopen('%s/packages/%s' % (registry, pkg))
         info = json.load(req)
         os.chdir(bowerrc['directory'])
-        check_call(['git', 'clone', info['url']])
+        if not os.path.isdir(os.path.join(pkg, '.git')):
+            check_call(['git', 'clone', info['url'], pkg])
         os.chdir(pkg)
         install()
         os.chdir(topdir)
