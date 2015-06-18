@@ -17,6 +17,8 @@ def install():
     for pkg in bower_json['dependencies'].keys():
         req = urllib.urlopen('%s/packages/%s' % (registry, pkg))
         info = json.load(req)
+        if not os.path.isdir(bowerrc['directory']):
+            os.makedirs(bowerrc['directory'])
         os.chdir(bowerrc['directory'])
         check_call(['git', 'clone', info['url']])
         os.chdir(pkg)
