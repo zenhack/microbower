@@ -4,15 +4,44 @@ import urllib
 import json
 import os
 import os.path
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def load_json_file(location, filename):
+    try:
+        with open(os.path.join(location, filename)) as f:
+            ret = json.load(f)
+    except ValueError:
+        logger.warning('%r is not valid JSON, ignoring.', filename)
+        ret = {}
+    except OSError as e:
+        logger.warning('Failed to open %r: %r. Ignoring.', filename, e)
+        ret = {}
+    if not isinstance(ret, dict):
+        logger.warning('%r does not contain a dictionary. Ignoring.', filename)
+        ret = {}
+    return ret
+
+
+def load_bowerrc(location='.'):
+    bowerrc = load_json_file(location, '.bowerrc')
+    bowerrc['directory'] = bowerrc.get('directory',
+                                       os.path.join(location,
+                                                    'bower_components'))
+    return bowerrc
+
+
+def load_bower_json(location='.'):
+    bower_json = load_json_file(location, 'bower.json')
+    bower_json['dependencies'] = bower_json.get('dependencies', {})
+    return bower_json
 
 
 def install():
-    if not (os.path.isfile('.bowerrc') and os.path.isfile('bower.json')):
-        return
-    with open('.bowerrc') as f:
-        bowerrc = json.load(f)
-    with open('bower.json') as f:
-        bower_json = json.load(f)
+    bowerrc = load_bowerrc()
+    bower_json = load_bower_json()
 
     if not os.path.isdir(bowerrc['directory']):
         os.makedirs(bowerrc['directory'])
